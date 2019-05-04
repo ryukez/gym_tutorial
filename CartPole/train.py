@@ -30,7 +30,7 @@ if __name__ == '__main__':
     ### Consts ###############################
     nState = env.observation_space.shape[0]
     nAction = env.action_space.n
-    nEpisode = 1000
+    nEpisode = 3000
     gamma = 1.0
     dir = args.path
     rewardsPath = dir + 'rewards.txt'
@@ -56,7 +56,7 @@ if __name__ == '__main__':
         while not done:
             env.render()
 
-            # Make Decision
+            # Make decision
             x = Variable(torch.Tensor([state]))
             probs = policyNet(x)
 
