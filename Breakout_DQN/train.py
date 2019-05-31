@@ -7,7 +7,6 @@ import models
 import agents
 import trainers
 
-### Consts ###############################
 N_EPISODE = 100
 BUFFER_SIZE = 10000
 TRAIN_INTERVAL = 4
@@ -17,7 +16,9 @@ POLICY_UPDATE_INTERVAL = 1000
 LR = 0.0003
 FRAME_SKIP = 1
 SAVE_EPISODE_INTERVAL = 100
-##########################################
+INITIAL_EPSILON = 1.0
+FINAL_EPSILON = 0.1
+EXPLORATION_STEPS = 1000000
 
 
 if __name__ == '__main__':
@@ -51,7 +52,12 @@ if __name__ == '__main__':
             env.render()
 
             if t % FRAME_SKIP == 0:
-                action = agent.getAction(state)
+                eps = FINAL_EPSILON
+                if t < EXPLORATION_STEPS:
+                    t_norm = t / EXPLORATION_STEPS
+                    eps = INITIAL_EPSILON * (1 - t_norm) + FINAL_EPSILON * t_norm
+
+                action = agent.getAction(state, eps)
 
             observation, reward, done, _ = env.step(action)
             nextState = torch.cat([state.narrow(1, 1, 3), utils.preprocess(observation)], 1)
