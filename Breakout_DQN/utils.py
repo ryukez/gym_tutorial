@@ -1,8 +1,9 @@
 import random
+from typing import List, NamedTuple
+
+import numpy as np
 import torch
 import torchvision.transforms as T
-import numpy as np
-from typing import List, NamedTuple
 
 
 class Step(NamedTuple):

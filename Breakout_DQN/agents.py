@@ -1,7 +1,8 @@
 import numpy as np
-from torch.autograd import Variable
-import models
 import torch
+from torch.autograd import Variable
+
+import models
 
 EPS = 0.05
 

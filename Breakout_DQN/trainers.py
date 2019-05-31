@@ -1,10 +1,12 @@
-import models
 from typing import List
-import utils
-from torch.autograd import Variable
+
 import torch
 import torch.optim as optim
 import torch.nn as nn
+from torch.autograd import Variable
+
+import utils
+import models
 
 GAMMA = 0.99
 
