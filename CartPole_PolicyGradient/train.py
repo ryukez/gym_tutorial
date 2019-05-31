@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import torch.optim as optim
 from torch.autograd import Variable
-import policy
+import models
 
 
 # Tuple for calculating loss
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     modelPath = dir + 'policyNet.pth'
     ##########################################
 
-    policyNet = policy.PolicyNet(nState, 20, nAction)
+    policyNet = models.PolicyNet(nState, 20, nAction)
 
     # Load trained model
     if args.load:
