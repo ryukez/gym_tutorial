@@ -20,10 +20,10 @@ class Trainer(object):
         self.lossFunc = nn.MSELoss()
 
     def update(self, batch: List[utils.Step]) -> None:
-        stateBatch = Variable(torch.cat([step.state for step in batch], 0))
-        actionBatch = torch.LongTensor([step.action for step in batch])
-        rewardBatch = torch.Tensor([step.reward for step in batch])
-        nextStateBatch = Variable(torch.cat([step.nextState for step in batch], 0))
+        stateBatch = Variable(torch.cat([step.state for step in batch], 0).cuda())
+        actionBatch = torch.LongTensor([step.action for step in batch]).cuda()
+        rewardBatch = torch.Tensor([step.reward for step in batch]).cuda()
+        nextStateBatch = Variable(torch.cat([step.nextState for step in batch], 0).cuda())
 
         qValue = self.Q(stateBatch).gather(1, actionBatch.unsqueeze(1)).squeeze(1)
         qTarget = rewardBatch + self.QTarget(nextStateBatch).detach().max(1)[0] * self.gamma

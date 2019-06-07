@@ -15,7 +15,7 @@ class Agent(object):
         self.eps = EPS
 
     def getAction(self, state: torch.Tensor) -> int:
-        q, argq = self.Q(Variable(state)).max(1)
+        q, argq = self.Q(Variable(state.cuda())).max(1)
 
         probs = np.full(self.nAction, self.eps / self.nAction, np.float32)
         probs[argq[0]] += 1 - self.eps
