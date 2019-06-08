@@ -17,6 +17,9 @@ POLICY_UPDATE_INTERVAL = 10000
 LR = 0.0003
 FRAME_SKIP = 4
 SAVE_EPISODE_INTERVAL = 1000
+INITIAL_EPSILON = 1.0
+FINAL_EPSILON = 0.1
+EXPLORATION_STEPS = 1000000
 ##########################################
 
 
@@ -49,7 +52,12 @@ if __name__ == '__main__':
         done = False
         while not done:
             if t % FRAME_SKIP == 0:
-                action = agent.getAction(state)
+                eps = FINAL_EPSILON
+                if t < EXPLORATION_STEPS:
+                    t_norm = t / EXPLORATION_STEPS
+                    eps = INITIAL_EPSILON * (1 - t_norm) + FINAL_EPSILON * t_norm
+
+                action = agent.getAction(state, eps)
 
             observation, reward, done, _ = env.step(action)
             nextState = torch.cat([state.narrow(1, 1, 3), utils.preprocess(observation)], 1)
