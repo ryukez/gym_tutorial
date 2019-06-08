@@ -15,7 +15,7 @@ class Trainer(object):
         self.opt = opt
 
         self.gamma = GAMMA
-        self.lossFunc = nn.MSELoss()
+        self.lossFunc = nn.SmoothL1Loss()
 
     def update(self, batch: utils.Batch) -> None:
 
