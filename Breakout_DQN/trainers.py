@@ -17,7 +17,7 @@ class Trainer(object):
         self.opt = opt
 
         self.gamma = GAMMA
-        self.lossFunc = nn.SmoothL1Loss()
+        self.lossFunc = nn.MSELoss()
 
     def update(self, batch: List[utils.Step]) -> None:
         stateBatch = Variable(torch.cat([step.state for step in batch], 0).cuda())

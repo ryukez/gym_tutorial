@@ -1,6 +1,7 @@
 import gym
 import torch
 import torch.optim as optim
+import random
 
 import utils
 import models
@@ -20,6 +21,7 @@ SAVE_EPISODE_INTERVAL = 1000
 INITIAL_EPSILON = 1.0
 FINAL_EPSILON = 0.1
 EXPLORATION_STEPS = 1000000
+RANDOM_FREEZE = 30
 ##########################################
 
 
@@ -40,17 +42,22 @@ if __name__ == '__main__':
     trainer = trainers.Trainer(Q, QTarget, opt)
 
     t = 0
-    action = env.action_space.sample()
     for episode in range(N_EPISODE):
         print("episode: %d\n" % (episode + 1))
 
         observation = env.reset()
+        action = env.action_space.sample()
         state = torch.cat([utils.preprocess(observation)] * 4, 1)
         sum_reward = 0
+        random_freeze = random.randint(1, RANDOM_FREEZE)
 
         # Exploration loop
         done = False
         while not done:
+            if random_freeze > 0:
+                random_freeze -= 1
+                continue
+
             if t % FRAME_SKIP == 0:
                 eps = FINAL_EPSILON
                 if t < EXPLORATION_STEPS:
