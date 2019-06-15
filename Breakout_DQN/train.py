@@ -8,15 +8,15 @@ import agents
 import trainers
 
 ### Consts ###############################
-N_EPISODE = 100
-BUFFER_SIZE = 10000
+N_EPISODE = 12000
+BUFFER_SIZE = 400000
 TRAIN_INTERVAL = 4
-INITIAL_WAIT_INTERVAL = 100
+INITIAL_WAIT_INTERVAL = 20000
 BATCH_SIZE = 32
-POLICY_UPDATE_INTERVAL = 1000
+POLICY_UPDATE_INTERVAL = 10000
 LR = 0.0003
-FRAME_SKIP = 1
-SAVE_EPISODE_INTERVAL = 100
+FRAME_SKIP = 4
+SAVE_EPISODE_INTERVAL = 1000
 ##########################################
 
 
@@ -26,9 +26,9 @@ if __name__ == '__main__':
     nAction = env.action_space.n
     buffer = utils.ReplayBuffer(BUFFER_SIZE)
 
-    Q = models.QNet(nAction)
+    Q = models.QNet(nAction).cuda()
     Q.train()
-    QTarget = models.QNet(nAction)
+    QTarget = models.QNet(nAction).cuda()
     QTarget.eval()
 
     opt = optim.Adam(Q.parameters(), lr=LR)
@@ -48,8 +48,6 @@ if __name__ == '__main__':
         # Exploration loop
         done = False
         while not done:
-            env.render()
-
             if t % FRAME_SKIP == 0:
                 action = agent.getAction(state)
 
